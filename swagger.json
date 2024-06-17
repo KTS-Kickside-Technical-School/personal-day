@@ -1,0 +1,158 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+        "title": "Personal day",
+        "description": "This is the Personal Financial Day tracking system which will allow users to access and track their financials easily",
+        "contact": {
+            "name": "Ndahimana Bonheur",
+            "email": "ndahimana154@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "externalDocs": {
+        "description": "Find out more on my Blog",
+        "url": "https://www.ndahimana154.vercel.app"
+    },
+    "servers": [
+        {
+            "url": "http://localhost:3000"
+        }
+    ],
+    "tags": [
+        {
+            "name": "Autherntication Routes",
+            "description": "Everything that regards to authentication and authorization of the users."
+        }
+    ],
+    "paths": {
+        "/api/auth/register": {
+            "post": {
+                "tags": [
+                    "Autherntication Routes"
+                ],
+                "summary": "Create your own account",
+                "requestBody": {
+                    "description": "Create you own account in the Personal ay",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "required": true,
+                                        "example": "Sampleemail"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "required": true,
+                                        "example": "Password@123"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful registration"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                },
+                "security": [
+                    {
+                        "petstore_auth": [
+                            "write:pets",
+                            "read:pets"
+                        ]
+                    }
+                ]
+            }
+        },
+        "/user/createWithList": {
+            "post": {
+                "tags": [
+                    "user"
+                ],
+                "summary": "Creates list of users with given input array",
+                "description": "Creates list of users with given input array",
+                "operationId": "createUsersWithListInput",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "array",
+                                "items": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            },
+                            "application/xml": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/User"
+                                }
+                            }
+                        }
+                    },
+                    "default": {
+                        "description": "successful operation"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "User": {
+                "type": "object",
+                "properties": {
+                    "firstName": {
+                        "type": "String",
+                        "required": true
+                    },
+                    "lastName": {
+                        "type": "String",
+                        "required": true
+                    },
+                    "dob": {
+                        "type": "Date",
+                        "required": false
+                    },
+                    "email": {
+                        "type": "String",
+                        "required": true
+                    },
+                    "isUserVerified": {
+                        "type": "Boolean",
+                        "default": false
+                    },
+                    "userType": {
+                        "type": "String",
+                        "required": true
+                    },
+                    "password": {
+                        "type": "String",
+                        "required": true
+                    }
+                }
+            }
+        }
+    }
+}
