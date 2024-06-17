@@ -5,5 +5,5 @@ config();
 
 
 mongoose.connect(`${process.env.DB_URL}`)
-    .then(() => console.log("Succed"))
-    .catch((err) => console.log(err));
+    .then(() => console.log("Database Connected successfully"))
+    .catch((err) => console.log("Databse connection failed", err));
