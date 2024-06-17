@@ -1,5 +1,7 @@
-import httpStatus from "http-status";
-import authRepositories from "../modules/auth/authRepository/authRepositories.js";
+import httpStatus from "http-status"
+import bcrypt from "bcrypt"
+
+import authRepositories from "../modules/auth/authRepository/authRepositories.js"
 
 
 export const validateSchema = (schema) => async (req, res, next) => {
@@ -7,8 +9,8 @@ export const validateSchema = (schema) => async (req, res, next) => {
         const { error } = schema.validate(req.body, { abortEarly: false });
 
         if (error) {
-            const errorMessage = error.details.map((detail) => detail.message.replace(/['"]/g, '')).join(', ');
-            return res.status(httpStatus.BAD_REQUEST).json({ status: httpStatus.BAD_REQUEST, message: errorMessage });
+            const errorMessage = error.details.map((detail) => detail.message.replace(/['"]/g, '')).join(', ')
+            return res.status(httpStatus.BAD_REQUEST).json({ status: httpStatus.BAD_REQUEST, message: errorMessage })
         }
 
         return next();
@@ -18,10 +20,10 @@ export const validateSchema = (schema) => async (req, res, next) => {
 };
 
 
-export const isUserAlreadyExist =async (req, res, next) => {
+export const isUserAlreadyExist = async (req, res, next) => {
     const email = req.body.email;
 
-    const user =await authRepositories.findUserByAttribute("email", email);
+    const user = await authRepositories.findUserByAttribute("email", email);
     if (user) {
         return res.status(httpStatus.BAD_REQUEST).json({ status: httpStatus.BAD_REQUEST, message: "User already exists" })
     }
@@ -29,16 +31,20 @@ export const isUserAlreadyExist =async (req, res, next) => {
     return next()
 }
 
-export const verifyUserCredentials = async (req, res, next) => {
+export const isUserExists = async (req, res, next) => {
     const email = req.body.email;
-    const password = req.body.password;
 
     const user = await authRepositories.findUserByAttribute("email", email);
     if (!user) {
         return res.status(httpStatus.BAD_REQUEST).json({ status: httpStatus.BAD_REQUEST, message: "User does not exist" })
     }
-
-    if (user.password!== password) {
+    req.user = user
+    return next()
+}
+export const verifyUserCredentials = async (req, res, next) => {
+    const user = await authRepositories.findUserByAttribute("email", req.body.email);
+    const isPasswordMatch = await bcrypt.compare(req.body.password, user.password)
+    if (!isPasswordMatch) {
         return res.status(httpStatus.BAD_REQUEST).json({ status: httpStatus.BAD_REQUEST, message: "Incorrect password" })
     }
 
