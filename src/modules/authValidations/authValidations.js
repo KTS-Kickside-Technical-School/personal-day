@@ -13,3 +13,9 @@ export const registrationSchema = Joi.object({
             'string.max': 'Password must not exceed {#limit} characters'
         })
 });
+
+
+export const loginSchema = Joi.object({
+    email: Joi.string().email().required(),
+    password: Joi.string().required()
+})
