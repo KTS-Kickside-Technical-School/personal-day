@@ -16,7 +16,7 @@ export const generateToken = async (userId) => {
 }
 
 export const decodeToken = async (token) => {
-    return jwt.verify({ token }, process.env.JWT_SECRET_KEY)
+    return jwt.verify( token , process.env.JWT_SECRET_KEY)
 }
 export const deviceInfo = async (req) => {
     const agent = useragent.parse(req.headers['user-agent']);

@@ -62,13 +62,11 @@ export const verifyUserCredentials = async (req, res, next) => {
 
 export const isTokenValid = async (req, res, next) => {
     const token = await authRepositories.getSessionBYAttributes("token", req.body.token, "userId", req.body.userId);
-    console.log(token);
     if (!token) {
         return res.status(httpStatus.BAD_REQUEST).json({ status: httpStatus.BAD_REQUEST, message: "Invalid token" })
     }
 
     return next()
 }
-
 
 

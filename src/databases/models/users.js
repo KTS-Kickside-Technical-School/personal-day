@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     },
-    userType: {
+    type: {
         type: String,
         required: true,
         default: "client"
