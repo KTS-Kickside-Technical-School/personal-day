@@ -1,9 +1,9 @@
+import mongoose from "mongoose";
 import httpStatus from "http-status"
 import bcrypt from "bcrypt"
 
 import authRepositories from "../modules/auth/authRepository/authRepositories.js"
-import mongoose from "mongoose";
-
+import peopleRepositories from "../modules/people/peopleRepository/peopleRepositories.js";
 
 export const validateSchema = (schema) => async (req, res, next) => {
     try {
@@ -70,3 +70,19 @@ export const isTokenValid = async (req, res, next) => {
 }
 
 
+export const isPeopleExist = async (req, res, next) => {
+    const people = await peopleRepositories.getSinglePersonByAttributes("_id", req.params.id)
+    if (!people) return res.status(httpStatus.NOT_FOUND).json({ status: httpStatus.NOT_FOUND, message: "No such person found." })
+    req.people = people
+    return next()
+}
+
+
+
+
+export const isIdValid = async (req, res, next) => {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+        return res.status(httpStatus.BAD_REQUEST).json({ status: httpStatus.BAD_REQUEST, message: "Invalid id" })
+    }
+    return next()
+}
