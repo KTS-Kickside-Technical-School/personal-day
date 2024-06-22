@@ -7,14 +7,19 @@ This is a personal day financial tracking system, which is intended to track per
 1. Welcome message endpoint
 2. User Registration endpoint
 3. User Login endpoint
+4. User forgot password endpoint
+5. User reset password endpoint
 
- 
- --------------------------------------------------------------
+
  | Verb | Endpoint                     | Code   | Availability|
  |------------------------------------------------------------|
- | GET  | /api                         | 200 OK | Public      |
+ | GET  | /                            | 200 OK | Public      |
  |------------------------------------------------------------|
- | POST | /api/register                | 201 CREATED | Public |
+ | POST | /api/auth/register           | 201 CREATED | Public |
  |------------------------------------------------------------|
- |POST | /api/login                    | 200 OK      | Public |
+ |POST | /api/auth/login               | 200 OK      | Public |
+ |------------------------------------------------------------|
+ | POST | /api/auth/forgot-password         | 200 OK | Public |
+ |------------------------------------------------------------|
+ | POST | /api/auth/reset-password          | 200 OK | Public |
  |------------------------------------------------------------|

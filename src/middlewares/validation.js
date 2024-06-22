@@ -2,6 +2,7 @@ import httpStatus from "http-status"
 import bcrypt from "bcrypt"
 
 import authRepositories from "../modules/auth/authRepository/authRepositories.js"
+import mongoose from "mongoose";
 
 
 export const validateSchema = (schema) => async (req, res, next) => {
@@ -33,8 +34,16 @@ export const isUserAlreadyExist = async (req, res, next) => {
 
 export const isUserExists = async (req, res, next) => {
     const email = req.body.email;
+    const userId = req.body.userId
+    let user = undefined
+    if (email) {
+        user = await authRepositories.findUserByAttribute("email", email);
+    }
+    if (userId && mongoose.Types.ObjectId.isValid(userId)) {
+        user = await authRepositories.findUserByAttribute("_id", userId);
 
-    const user = await authRepositories.findUserByAttribute("email", email);
+    }
+
     if (!user) {
         return res.status(httpStatus.BAD_REQUEST).json({ status: httpStatus.BAD_REQUEST, message: "User does not exist" })
     }
@@ -51,6 +60,15 @@ export const verifyUserCredentials = async (req, res, next) => {
     return next()
 }
 
+export const isTokenValid = async (req, res, next) => {
+    const token = await authRepositories.getSessionBYAttributes("token", req.body.token, "userId", req.body.userId);
+    console.log(token);
+    if (!token) {
+        return res.status(httpStatus.BAD_REQUEST).json({ status: httpStatus.BAD_REQUEST, message: "Invalid token" })
+    }
+
+    return next()
+}
 
 
 
