@@ -24,8 +24,8 @@ export const loginUser = async (req, res) => {
         const device = await deviceInfo(req)
 
         const type = "Login"
-        
-        await authRepositories.saveSessions(token, device.os, type,req.user._id)
+
+        await authRepositories.saveSessions(token, device.os, type, req.user._id)
         await sendEmail(req.user.email, "New login Confirmation - Personal Day", `Thank you, your login on the new device(${device.os}) has succed.`)
 
         return res.status(httpStatus.OK).json({ status: httpStatus.OK, message: "User logged in successfully", data: { token, user: { Id: req.user._id, Email: req.user.email } } })
@@ -70,6 +70,18 @@ export const resetPassword = async (req, res) => {
             }
         })
 
+    } catch (error) {
+        return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ status: httpStatus.BAD_REQUEST, message: error.message })
+    }
+}
+
+export const logout = async (req, res) => {
+    try {
+        const session = await authRepositories.deleteSessionsByAttributes("userId", req.user._id)
+
+        await sendEmail(req.user.email, "Logout successful - Personal Day", `Logout to your account succed.`)
+
+        return res.status(httpStatus.OK).json({ status: httpStatus.OK, message: "User logged out successfully", data: { session } })
     } catch (error) {
         return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({ status: httpStatus.BAD_REQUEST, message: error.message })
     }

@@ -72,9 +72,9 @@
                 "tags": [
                     "Autherntication Routes"
                 ],
-                "summary": "Create your own account",
+                "summary": "Log into your account",
                 "requestBody": {
-                    "description": "Create you own account in the Personal ay",
+                    "description": "Log into your account in the Personal ay",
                     "content": {
                         "application/json": {
                             "schema": {
@@ -102,6 +102,186 @@
                     },
                     "400": {
                         "description": "Bad Request"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/api/auth/logout": {
+            "post": {
+                "tags": [
+                    "Autherntication Routes"
+                ],
+                "summary": "Logout",
+                "responses": {
+                    "200": {
+                        "description": "Successful Login"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Not authorized"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/api/people": {
+            "post": {
+                "tags": [
+                    "People and Groups Routes"
+                ],
+                "summary": "Create people and groups",
+                "requestBody": {
+                    "description": "Create your own people",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "fullNames": {
+                                        "type": "string",
+                                        "required": true,
+                                        "example": "Sample names"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "required": false,
+                                        "example": "emailsample@gmail.com"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "required": false,
+                                        "example": "+250781234567"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Successful Created"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Not authorized"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "get": {
+                "tags": [
+                    "People and Groups Routes"
+                ],
+                "summary": "View people and groups",
+                "responses": {
+                    "200": {
+                        "description": "Successfully retrieved."
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Not authorized"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/api/people/{id}": {
+            "put": {
+                "tags": [
+                    "People and Groups Routes"
+                ],
+                "summary": "Update people and groups",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "description": "Update people and groups",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "fullNames": {
+                                        "type": "string",
+                                        "required": true,
+                                        "example": "Sample names"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "required": false,
+                                        "example": "emailsample@gmail.com"
+                                    },
+                                    "phone": {
+                                        "type": "string",
+                                        "required": false,
+                                        "example": "+250781234567"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Updated"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Not authorized"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "People and Groups Routes"
+                ],
+                "summary": "Update people and groups",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful Deleted"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "401": {
+                        "description": "Not authorized"
                     },
                     "500": {
                         "description": "Internal Server Error"
@@ -142,6 +322,54 @@
                     "password": {
                         "type": "String",
                         "required": true
+                    }
+                }
+            },
+            "Sessions": {
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "type": "String",
+                        "required": true,
+                        "ref": "User"
+                    },
+                    "token": {
+                        "type": "String",
+                        "required": true
+                    },
+                    "device": {
+                        "type": "String",
+                        "required": true
+                    },
+                    "time": {
+                        "type": "Date",
+                        "required": true
+                    },
+                    "type": {
+                        "type": "String",
+                        "required": true
+                    }
+                }
+            },
+            "People": {
+                "type": "object",
+                "properties": {
+                    "userId": {
+                        "type": "string",
+                        "required": true,
+                        "ref": "User"
+                    },
+                    "fullNames": {
+                        "type": "String",
+                        "required": true
+                    },
+                    "email": {
+                        "type": "String",
+                        "required": false
+                    },
+                    "phone": {
+                        "type": "String",
+                        "required": false
                     }
                 }
             }
